@@ -6,6 +6,12 @@ set -o errexit
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 
+# Create mediafiles directory if it doesn't exist
+mkdir -p mediafiles/products
+
+# Copy media files
+cp -r media/products/* mediafiles/products/
+
 # Convert static asset files
 python manage.py collectstatic --noinput
 
