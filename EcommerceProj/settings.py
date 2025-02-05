@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import dj_database_url
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -80,6 +80,8 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+DATABASES['default'] = dj_database_url.parse('postgresql://ecommerce_django_project_user:Sq4Y6c5qpUaIaolLyl7XO2JdRhrN9BKM@dpg-cuhehkbtq21c73b8pr40-a.oregon-postgres.render.com/ecommerce_django_project')
 
 
 # Password validation
