@@ -23,9 +23,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-6(zbgsn&wd2*wp_c+i4&7l%s5@fivzh3dwbs@%j+16y0g-gago'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'food-store-sdcs.onrender.com',
+    'localhost',
+    '127.0.0.1'
+]
 
 
 # Application definition
