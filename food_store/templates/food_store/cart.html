@@ -1,0 +1,462 @@
+{% extends 'food_store/base.html' %}
+{% load custom_filters %}
+
+{% block title %}Giỏ Hàng - Cửa Hàng Đồ Ăn{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section text-center p-4 rounded mb-5 animate__animated animate__fadeIn">
+    <h1 class="display-4 text-white fw-bold mb-0">Giỏ Hàng Của Bạn</h1>
+</div>
+
+{% if order %}
+    <div class="row">
+        <div class="col-md-8 animate__animated animate__fadeInLeft">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table align-middle cart-table">
+                            <thead>
+                                <tr class="bg-light">
+                                    <th scope="col" class="border-0 ps-4" width="50%">Sản Phẩm</th>
+                                    <th scope="col" class="border-0 text-center">Giá</th>
+                                    <th scope="col" class="border-0 text-center">Số Lượng</th>
+                                    <th scope="col" class="border-0 text-center">Tổng</th>
+                                    <th scope="col" class="border-0 text-center">Hành Động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in order.items.all %}
+                                <tr class="product-row">
+                                    <td class="ps-4">
+                                        <div class="d-flex align-items-center">
+                                            {% if item.product.image %}
+                                            <div class="product-img-wrapper me-3">
+                                                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                                            </div>
+                                            {% endif %}
+                                            <div>
+                                                <h6 class="product-name mb-1">{{ item.product.name }}</h6>
+                                                <span class="category-badge">{{ item.product.category.name }}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="price-tag">{{ item.price|format_price }}đ</span>
+                                    </td>
+                                    <td class="text-center" style="width: 200px;">
+                                        <div class="quantity-control mx-auto">
+                                            <form method="post" action="{% url 'food_store:update_cart' item.id %}" 
+                                                  class="d-flex align-items-center justify-content-center">
+                                                {% csrf_token %}
+                                                <button type="button" class="btn btn-quantity {% if item.quantity <= 1 %}disabled{% endif %}" 
+                                                        onclick="decrementQuantity(this)" 
+                                                        {% if item.quantity <= 1 %}disabled{% endif %}>
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                                <input type="number" name="quantity" value="{{ item.quantity }}" 
+                                                       min="1" max="10" class="form-control quantity-input"
+                                                       onchange="validateAndSubmit(this)">
+                                                <button type="button" class="btn btn-quantity {% if item.quantity >= 10 %}disabled{% endif %}" 
+                                                        onclick="incrementQuantity(this)"
+                                                        {% if item.quantity >= 10 %}disabled{% endif %}>
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="price-tag fw-bold">{{ item.price|multiply:item.quantity|format_price }}đ</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <form method="post" action="{% url 'food_store:remove_from_cart' item.id %}" 
+                                              class="d-inline-block">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-remove" title="Xóa sản phẩm">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 animate__animated animate__fadeInRight">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-gradient">
+                    <h5 class="mb-0 text-white">Tổng Đơn Hàng</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="text-muted">Tạm tính:</span>
+                        <span class="price-tag">{{ order.total_amount|format_price }}đ</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="text-muted">Phí vận chuyển:</span>
+                        <span class="text-success fw-bold">Miễn phí</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between mb-4">
+                        <span class="fw-bold">Tổng cộng:</span>
+                        <span class="price-tag h4 mb-0">{{ order.total_amount|format_price }}đ</span>
+                    </div>
+                    <a href="{% url 'food_store:checkout' %}" class="btn custom-btn w-100 mb-3">
+                        <i class="fas fa-credit-card me-2"></i>Tiến Hành Thanh Toán
+                    </a>
+                    <a href="{% url 'food_store:product_list' %}" class="btn custom-btn-outline w-100">
+                        <i class="fas fa-arrow-left me-2"></i>Tiếp Tục Mua Sắm
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="empty-cart text-center py-5 animate__animated animate__fadeIn">
+        <div class="empty-cart-icon mb-4">
+            <i class="fas fa-shopping-cart"></i>
+        </div>
+        <h3 class="mb-3">Giỏ hàng của bạn đang trống</h3>
+        <p class="text-muted mb-4">Hãy thêm một số món ăn ngon vào giỏ hàng!</p>
+        <a href="{% url 'food_store:product_list' %}" class="btn custom-btn">
+            <i class="fas fa-utensils me-2"></i>Xem Thực Đơn
+        </a>
+    </div>
+{% endif %}
+
+<style>
+    .hero-section {
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 15px rgba(221, 36, 118, 0.3);
+    }
+
+    .card {
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+    .card-header.bg-gradient {
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        border: none;
+        padding: 1rem 1.5rem;
+    }
+
+    .product-img-wrapper {
+        width: 80px;
+        height: 80px;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .product-img-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .product-row:hover .product-img-wrapper img {
+        transform: scale(1.05);
+    }
+
+    .product-name {
+        font-weight: 600;
+        color: #333;
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .category-badge {
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        color: white;
+        padding: 0.3rem 1rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+
+    .quantity-control {
+        display: inline-flex;
+        align-items: center;
+        background: #f8f9fa;
+        border-radius: 25px;
+        padding: 0.3rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        width: 120px;
+    }
+
+    .quantity-input {
+        width: 40px;
+        text-align: center;
+        border: none;
+        background: transparent;
+        margin: 0 0.5rem;
+        padding: 0.2rem;
+        font-weight: 600;
+        color: #333;
+        -moz-appearance: textfield;
+    }
+
+    .quantity-input::-webkit-outer-spin-button,
+    .quantity-input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .btn-quantity {
+        width: 28px;
+        height: 28px;
+        padding: 0;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: white;
+        border: 1px solid #ddd;
+        color: #666;
+        transition: all 0.3s ease;
+    }
+
+    .btn-quantity:hover {
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        border-color: transparent;
+        color: white;
+    }
+
+    .btn-remove {
+        width: 35px;
+        height: 35px;
+        padding: 0;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        border: 1px solid #ddd;
+        color: #666;
+        transition: all 0.3s ease;
+    }
+
+    .btn-remove:hover {
+        background: #dc3545;
+        border-color: #dc3545;
+        color: white;
+        transform: rotate(90deg);
+    }
+
+    .price-tag {
+        font-size: 1.1rem;
+        font-weight: bold;
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+    }
+
+    .cart-table {
+        margin-bottom: 0;
+    }
+
+    .cart-table thead tr {
+        background-color: #f8f9fa;
+    }
+
+    .cart-table th {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.875rem;
+        letter-spacing: 0.5px;
+        padding: 1rem;
+        color: #555;
+    }
+
+    .product-row {
+        transition: all 0.3s ease;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .product-row:last-child {
+        border-bottom: none;
+    }
+
+    .product-row:hover {
+        background-color: #f8f9fa;
+    }
+
+    .empty-cart-icon {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 2rem;
+    }
+
+    .empty-cart-icon i {
+        font-size: 3rem;
+        color: white;
+    }
+
+    .custom-btn {
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        border: none;
+        color: white;
+        transition: all 0.3s ease;
+        padding: 0.8rem 1.5rem;
+    }
+
+    .custom-btn:hover {
+        background: linear-gradient(45deg, #DD2476, #FF512F);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(221, 36, 118, 0.4);
+    }
+
+    .custom-btn-outline {
+        color: #DD2476;
+        border: 2px solid #DD2476;
+        background: transparent;
+        transition: all 0.3s ease;
+        padding: 0.8rem 1.5rem;
+    }
+
+    .custom-btn-outline:hover {
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        border-color: transparent;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(221, 36, 118, 0.4);
+    }
+
+    @media (max-width: 768px) {
+        .product-img-wrapper {
+            width: 60px;
+            height: 60px;
+        }
+
+        .product-name {
+            font-size: 0.9rem;
+        }
+
+        .category-badge {
+            padding: 0.2rem 0.8rem;
+            font-size: 0.7rem;
+        }
+
+        .quantity-control {
+            width: 100px;
+        }
+
+        .btn-quantity {
+            width: 24px;
+            height: 24px;
+        }
+
+        .quantity-input {
+            width: 30px;
+            font-size: 0.9rem;
+        }
+
+        .price-tag {
+            font-size: 0.9rem;
+        }
+    }
+
+    .btn-quantity.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        background: #eee !important;
+        border-color: #ddd !important;
+        color: #999 !important;
+        transform: none !important;
+    }
+
+    .quantity-input::-webkit-inner-spin-button,
+    .quantity-input::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .quantity-input {
+        -moz-appearance: textfield;
+    }
+</style>
+
+<script>
+    function validateAndSubmit(input) {
+        let value = parseInt(input.value);
+        if (isNaN(value) || value < 1) {
+            value = 1;
+        } else if (value > 10) {
+            value = 10;
+        }
+        input.value = value;
+        input.form.submit();
+    }
+
+    function updateButtonStates(quantityInput) {
+        const form = quantityInput.closest('form');
+        const decrementBtn = form.querySelector('button:first-of-type');
+        const incrementBtn = form.querySelector('button:last-of-type');
+        const value = parseInt(quantityInput.value);
+
+        // Cập nhật trạng thái nút giảm
+        if (value <= 1) {
+            decrementBtn.classList.add('disabled');
+            decrementBtn.disabled = true;
+        } else {
+            decrementBtn.classList.remove('disabled');
+            decrementBtn.disabled = false;
+        }
+
+        // Cập nhật trạng thái nút tăng
+        if (value >= 10) {
+            incrementBtn.classList.add('disabled');
+            incrementBtn.disabled = true;
+        } else {
+            incrementBtn.classList.remove('disabled');
+            incrementBtn.disabled = false;
+        }
+    }
+
+    function incrementQuantity(button) {
+        const form = button.closest('form');
+        const input = form.querySelector('input[type="number"]');
+        const value = parseInt(input.value);
+        
+        if (value < 10) {
+            input.value = value + 1;
+            updateButtonStates(input);
+            form.submit();
+        }
+    }
+
+    function decrementQuantity(button) {
+        const form = button.closest('form');
+        const input = form.querySelector('input[type="number"]');
+        const value = parseInt(input.value);
+        
+        if (value > 1) {
+            input.value = value - 1;
+            updateButtonStates(input);
+            form.submit();
+        }
+    }
+
+    // Khởi tạo trạng thái nút cho tất cả các form khi trang load
+    document.addEventListener('DOMContentLoaded', function() {
+        const quantityInputs = document.querySelectorAll('.quantity-input');
+        quantityInputs.forEach(input => {
+            updateButtonStates(input);
+        });
+    });
+</script>
+{% endblock %} 

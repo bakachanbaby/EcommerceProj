@@ -1,0 +1,235 @@
+{% extends 'food_store/base.html' %}
+
+{% block title %}About Us - Food Store{% endblock %}
+
+{% block content %}
+<div class="about-section">
+    <!-- Hero Section với Background Image -->
+    <div class="hero-banner text-center p-5 rounded mb-5 animate__animated animate__fadeIn">
+        <div class="hero-content">
+            <h1 class="display-4 text-white fw-bold mb-4">Câu chuyện của chúng tôi</h1>
+            <p class="lead text-white mb-0">Chúng tôi đã mang đến những món ăn ngon đến bàn của bạn từ năm 2024</p>
+        </div>
+    </div>
+
+    <!-- Mission & Vision Section -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-6 animate__animated animate__fadeInLeft">
+            <div class="feature-card">
+                <div class="icon-wrapper mb-4">
+                    <i class="fas fa-bullseye"></i>
+                </div>
+                <h3>Sứ mệnh của chúng tôi</h3>
+                <p>Chúng tôi cung cấp những trải nghiệm thực phẩm tuyệt vời mang lại niềm vui cho khách hàng trong khi duy trì các thực phẩm bền vững và các thực phẩm có lợi cho sức khỏe.</p>
+            </div>
+        </div>
+        <div class="col-md-6 animate__animated animate__fadeInRight">
+            <div class="feature-card">
+                <div class="icon-wrapper mb-4">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <h3>Tầm nhìn của chúng tôi</h3>
+                <p>Trở thành điểm đến thực phẩm tin cậy và được yêu thích, được biết đến với chất lượng, sáng tạo và sự hài lòng của khách hàng.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Story Section with Image -->
+    <div class="row align-items-center mb-5">
+        <div class="col-md-6 animate__animated animate__fadeInLeft">
+            <div class="about-image-wrapper">
+                <img src="https://images.unsplash.com/photo-1466637574441-749b8f19452f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Restaurant interior" class="img-fluid rounded">
+            </div>
+        </div>
+        <div class="col-md-6 animate__animated animate__fadeInRight">
+            <div class="story-content">
+                <h2 class="section-title mb-4">Chuyến đi của chúng tôi</h2>
+                <p class="mb-4">Được thành lập vào năm 2024, Food Store đã bắt đầu như một nhà bếp gia đình nhỏ với một ước mơ lớn. Điều gì đã bắt đầu như một đam mê về việc tạo ra những món ăn ngon đã phát triển thành một điểm đến thực phẩm được yêu thích.</p>
+                <p>Chúng tôi rất tự hào về việc cung cấp những nguyên liệu tốt nhất và duy trì những tiêu chuẩn chất lượng cao nhất trong mỗi món ăn chúng tôi phục vụ. Sự cam kết của chúng tôi đối với sự hoàn hảo đã giúp chúng tôi thu được sự tin tưởng và sự thành công của khách hàng quý.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Values Section -->
+    <div class="values-section py-5">
+        <h2 class="text-center section-title mb-5">Giá trị cốt lõi của chúng tôi</h2>
+        <div class="row g-4">
+            <div class="col-md-3 col-sm-6 animate__animated animate__fadeInUp">
+                <div class="value-card text-center">
+                    <div class="value-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h4>Đam mê</h4>
+                    <p>Đam mê về thực phẩm và dịch vụ chất lượng</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
+                <div class="value-card text-center">
+                    <div class="value-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h4>Chất lượng</h4>
+                    <p>Nguyên liệu tốt và chế biến</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 animate__animated animate__fadeInUp" style="animation-delay: 0.4s;">
+                <div class="value-card text-center">
+                    <div class="value-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h4>Cộng đồng</h4>
+                    <p>Xây dựng các mối quan hệ bền chặt</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 animate__animated animate__fadeInUp" style="animation-delay: 0.6s;">
+                <div class="value-card text-center">
+                    <div class="value-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h4>Bền vững</h4>
+                    <p>Thực phẩm bền vững</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hero-banner {
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        position: relative;
+        min-height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .feature-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        height: 100%;
+        transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .icon-wrapper {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .icon-wrapper i {
+        font-size: 2rem;
+        color: white;
+    }
+
+    .section-title {
+        position: relative;
+        padding-bottom: 15px;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+    }
+
+    .about-image-wrapper {
+        position: relative;
+        overflow: hidden;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .about-image-wrapper img {
+        transition: transform 0.3s ease;
+    }
+
+    .about-image-wrapper:hover img {
+        transform: scale(1.05);
+    }
+
+    .value-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        height: 100%;
+        transition: all 0.3s ease;
+    }
+
+    .value-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .value-icon {
+        width: 70px;
+        height: 70px;
+        margin: 0 auto 1.5rem;
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .value-icon i {
+        font-size: 1.5rem;
+        color: white;
+    }
+
+    .value-card h4 {
+        color: #333;
+        margin-bottom: 1rem;
+    }
+
+    .value-card p {
+        color: #666;
+        margin-bottom: 0;
+    }
+
+    .values-section {
+        background-color: #f8f9fa;
+        border-radius: 15px;
+        margin: 2rem 0;
+    }
+
+    @media (max-width: 768px) {
+        .hero-banner {
+            min-height: 300px;
+        }
+        
+        .section-title::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .story-content {
+            text-align: center;
+            margin-top: 2rem;
+        }
+    }
+</style>
+{% endblock %} 

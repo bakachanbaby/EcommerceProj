@@ -1,0 +1,266 @@
+{% extends 'food_store/base.html' %}
+{% load custom_filters %}
+
+{% block title %}{{ product.name }} - Cửa Hàng Đồ Ăn{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section text-center p-4 rounded mb-5 animate__animated animate__fadeIn">
+    <h1 class="display-4 text-white fw-bold mb-0">{{ product.name }}</h1>
+</div>
+
+<div class="container">
+    <div class="row">
+        <!-- Product Image -->
+        <div class="col-md-6 mb-4 animate__animated animate__fadeInLeft">
+            <div class="product-image-wrapper">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" class="img-fluid rounded shadow-sm" alt="{{ product.name }}">
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="col-md-6 mb-4 animate__animated animate__fadeInRight">
+            <div class="product-info-card card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="product-description mb-4">
+                        <p class="lead">{{ product.description }}</p>
+                    </div>
+                    
+                    <div class="price-section mb-4">
+                        <h2 class="price-tag mb-0">{{ product.price|format_price }}đ</h2>
+                    </div>
+                    
+                    {% if user.is_authenticated %}
+                        <form method="post" action="{% url 'food_store:add_to_cart' product.id %}" class="mb-4">
+                            {% csrf_token %}
+                            <div class="quantity-section mb-3">
+                                <label class="form-label fw-bold">Số Lượng:</label>
+                                <div class="input-group">
+                                    <button type="button" class="btn custom-btn-outline" onclick="decrementQuantity()">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <input type="number" class="form-control text-center" name="quantity" id="quantity" value="1" min="1" max="10">
+                                    <button type="button" class="btn custom-btn-outline" onclick="incrementQuantity()">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn custom-btn btn-lg w-100">
+                                <i class="fas fa-shopping-cart me-2"></i>Thêm vào giỏ
+                            </button>
+                        </form>
+                    {% else %}
+                        <div class="mb-4">
+                            <a href="{% url 'food_store:login' %}?next={{ request.path }}" class="btn custom-btn btn-lg w-100">
+                                <i class="fas fa-sign-in-alt me-2"></i>Đăng nhập để mua hàng
+                            </a>
+                        </div>
+                    {% endif %}
+
+                    <div class="product-meta card border-0 bg-light">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="fw-bold">Danh Mục:</span>
+                                <span>{{ product.category.name }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span class="fw-bold">Tình Trạng:</span>
+                                {% if product.available %}
+                                <span class="badge bg-gradient">Còn Hàng</span>
+                                {% else %}
+                                <span class="badge bg-danger">Hết Hàng</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Products -->
+    <div class="related-products mt-5 animate__animated animate__fadeInUp">
+        <h3 class="section-title mb-4">Sản Phẩm Liên Quan</h3>
+        <div class="row g-4">
+            {% for related_product in product.category.product_set.all|slice:":3" %}
+                {% if related_product != product %}
+                <div class="col-md-4 mb-4">
+                    <div class="product-card card h-100 border-0 shadow-sm">
+                        {% if related_product.image %}
+                        <div class="img-wrapper">
+                            <img src="{{ related_product.image.url }}" class="card-img-top" alt="{{ related_product.name }}">
+                            <div class="overlay">
+                                <a href="{% url 'food_store:product_detail' related_product.id %}" class="btn custom-btn">Xem Chi Tiết</a>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="card-body text-center">
+                            <h5 class="card-title fw-bold">{{ related_product.name }}</h5>
+                            <p class="price-tag mb-3">{{ related_product.price|format_price }}đ</p>
+                            <a href="{% url 'food_store:product_detail' related_product.id %}" class="btn custom-btn-outline w-100">
+                                Xem Chi Tiết
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .hero-section {
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 15px rgba(221, 36, 118, 0.3);
+    }
+
+    .product-image-wrapper {
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+    .product-image-wrapper img {
+        width: 100%;
+        height: auto;
+        transition: transform 0.3s ease;
+    }
+
+    .product-info-card {
+        border-radius: 15px;
+        height: 100%;
+    }
+
+    .price-tag {
+        font-size: 2rem;
+        font-weight: bold;
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+    }
+
+    .quantity-section .input-group {
+        width: 200px;
+    }
+
+    .quantity-section input {
+        border-left: 0;
+        border-right: 0;
+    }
+
+    .custom-btn {
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        border: none;
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+    .custom-btn:hover {
+        background: linear-gradient(45deg, #DD2476, #FF512F);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(221, 36, 118, 0.4);
+    }
+
+    .custom-btn-outline {
+        color: #DD2476;
+        border: 2px solid #DD2476;
+        background: transparent;
+        transition: all 0.3s ease;
+    }
+
+    .custom-btn-outline:hover {
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        border-color: transparent;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .badge.bg-gradient {
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+    }
+
+    .product-meta {
+        border-radius: 10px;
+    }
+
+    .section-title {
+        position: relative;
+        padding-bottom: 15px;
+        margin-bottom: 30px;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+    }
+
+    /* Related Products Styles */
+    .img-wrapper {
+        position: relative;
+        padding-top: 75%;
+        overflow: hidden;
+    }
+
+    .img-wrapper img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .img-wrapper .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    .product-card:hover .img-wrapper img {
+        transform: scale(1.1);
+    }
+
+    .product-card:hover .overlay {
+        opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+        .quantity-section .input-group {
+            width: 100%;
+        }
+    }
+</style>
+
+<script>
+    function incrementQuantity() {
+        var input = document.getElementById('quantity');
+        var value = parseInt(input.value, 10);
+        if (value < 10) input.value = value + 1;
+    }
+
+    function decrementQuantity() {
+        var input = document.getElementById('quantity');
+        var value = parseInt(input.value, 10);
+        if (value > 1) input.value = value - 1;
+    }
+</script>
+{% endblock %} 

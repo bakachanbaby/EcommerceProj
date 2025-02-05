@@ -1,0 +1,99 @@
+{% extends 'food_store/base.html' %}
+
+{% block title %}Đăng Ký - Cửa Hàng Đồ Ăn{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-gradient">
+                    <h5 class="mb-0 text-white">Đăng Ký Tài Khoản</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        {% for field in form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                            {{ field.errors }}
+                            {{ field }}
+                            {% if field.help_text %}
+                            <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                        <button type="submit" class="btn custom-btn w-100">
+                            <i class="fas fa-user-plus me-2"></i>Đăng Ký
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <p class="mb-0">Đã có tài khoản? 
+                    <a href="{% url 'admin:login' %}" class="text-decoration-none">Đăng nhập</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+    .card-header.bg-gradient {
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        padding: 1rem 1.5rem;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        padding: 0.8rem;
+    }
+
+    .form-control:focus {
+        border-color: #DD2476;
+        box-shadow: 0 0 0 0.2rem rgba(221, 36, 118, 0.25);
+    }
+
+    .custom-btn {
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        border: none;
+        color: white;
+        transition: all 0.3s ease;
+        padding: 0.8rem 1.5rem;
+    }
+
+    .custom-btn:hover {
+        background: linear-gradient(45deg, #DD2476, #FF512F);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(221, 36, 118, 0.4);
+    }
+
+    /* Style cho form errors */
+    .errorlist {
+        color: #dc3545;
+        list-style: none;
+        padding: 0;
+        margin: 0.5rem 0;
+        font-size: 0.875rem;
+    }
+
+    /* Style cho form fields */
+    input {
+        width: 100%;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+</style>
+{% endblock %} 

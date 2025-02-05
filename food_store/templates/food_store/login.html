@@ -1,0 +1,83 @@
+{% extends 'food_store/base.html' %}
+
+{% block title %}Đăng Nhập - Cửa Hàng Đồ Ăn{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-gradient">
+                    <h5 class="mb-0 text-white">Đăng Nhập</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        {% if request.GET.next %}
+                            <input type="hidden" name="next" value="{{ request.GET.next }}">
+                        {% endif %}
+                        {% if form.errors %}
+                            <div class="alert alert-danger">
+                                Tên đăng nhập hoặc mật khẩu không đúng.
+                            </div>
+                        {% endif %}
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Tên đăng nhập</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mật khẩu</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <button type="submit" class="btn custom-btn w-100">
+                            <i class="fas fa-sign-in-alt me-2"></i>Đăng Nhập
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <p class="mb-0">Chưa có tài khoản? 
+                    <a href="{% url 'food_store:register' %}" class="text-decoration-none">Đăng ký ngay</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+    .card-header.bg-gradient {
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        padding: 1rem 1.5rem;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        padding: 0.8rem;
+    }
+
+    .form-control:focus {
+        border-color: #DD2476;
+        box-shadow: 0 0 0 0.2rem rgba(221, 36, 118, 0.25);
+    }
+
+    .custom-btn {
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        border: none;
+        color: white;
+        transition: all 0.3s ease;
+        padding: 0.8rem 1.5rem;
+    }
+
+    .custom-btn:hover {
+        background: linear-gradient(45deg, #DD2476, #FF512F);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(221, 36, 118, 0.4);
+    }
+</style>
+{% endblock %} 

@@ -1,0 +1,151 @@
+{% extends 'food_store/base.html' %}
+{% load custom_filters %}
+
+{% block title %}Đơn Hàng Của Tôi - Cửa Hàng Đồ Ăn{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section text-center p-4 rounded mb-5 animate__animated animate__fadeIn">
+    <h1 class="display-4 text-white fw-bold mb-0">Đơn Hàng Của Tôi</h1>
+</div>
+
+<div class="container">
+    {% if orders %}
+        <div class="row">
+            {% for order in orders %}
+            <div class="col-12 mb-4 animate__animated animate__fadeInUp" style="animation-delay: {{ forloop.counter0|multiply:0.1 }}s">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-gradient d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 text-white">Đơn Hàng #{{ order.id }}</h5>
+                        <span class="order-status badge {% if order.status == 'completed' %}bg-success{% else %}bg-warning{% endif %}">
+                            {% if order.status == 'completed' %}
+                                Đã hoàn thành
+                            {% else %}
+                                Đang xử lý
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="order-info mb-4">
+                                    <h6 class="text-muted mb-3">Thông Tin Đơn Hàng</h6>
+                                    <p class="mb-2"><strong>Ngày đặt:</strong> {{ order.created_at|date:"d/m/Y H:i" }}</p>
+                                    <p class="mb-2"><strong>Địa chỉ:</strong> {{ order.shipping_address }}</p>
+                                    <p class="mb-0"><strong>Số điện thoại:</strong> {{ order.phone }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-muted mb-3">Chi Tiết Sản Phẩm</h6>
+                                {% for item in order.items.all %}
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div>
+                                        <span class="fw-bold">{{ item.product.name }}</span>
+                                        <small class="text-muted d-block">{{ item.quantity }} x {{ item.price|format_price }}đ</small>
+                                    </div>
+                                    <span class="price-tag">{{ item.price|multiply:item.quantity|format_price }}đ</span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="text-muted me-3">Phí vận chuyển: <span class="text-success">Miễn phí</span></span>
+                            </div>
+                            <div class="text-end">
+                                <span class="text-muted">Tổng cộng: </span>
+                                <span class="price-tag h5 mb-0">{{ order.total_amount|format_price }}đ</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-5">
+            <div class="empty-orders mb-4">
+                <i class="fas fa-box-open fa-4x text-muted"></i>
+            </div>
+            <h3>Bạn chưa có đơn hàng nào</h3>
+            <p class="text-muted mb-4">Hãy đặt hàng để thưởng thức những món ăn ngon của chúng tôi</p>
+            <a href="{% url 'food_store:product_list' %}" class="btn custom-btn">
+                <i class="fas fa-utensils me-2"></i>Xem Thực Đơn
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    .hero-section {
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 15px rgba(221, 36, 118, 0.3);
+    }
+
+    .card {
+        border-radius: 15px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+    .card-header.bg-gradient {
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        padding: 1rem 1.5rem;
+    }
+
+    .order-status {
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+    }
+
+    .price-tag {
+        font-weight: bold;
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .custom-btn {
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        border: none;
+        color: white;
+        transition: all 0.3s ease;
+        padding: 0.8rem 1.5rem;
+    }
+
+    .custom-btn:hover {
+        background: linear-gradient(45deg, #DD2476, #FF512F);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(221, 36, 118, 0.4);
+    }
+
+    .empty-orders {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ddd;
+    }
+
+    @media (max-width: 768px) {
+        .card-header {
+            flex-direction: column;
+            align-items: flex-start !important;
+        }
+        
+        .order-status {
+            margin-top: 0.5rem;
+        }
+    }
+</style>
+{% endblock %} 

@@ -1,0 +1,129 @@
+{% extends 'food_store/base.html' %}
+{% load custom_filters %}
+
+{% block title %}Thanh Toán - Cửa Hàng Đồ Ăn{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section text-center p-4 rounded mb-5 animate__animated animate__fadeIn">
+    <h1 class="display-4 text-white fw-bold mb-0">Thanh Toán</h1>
+</div>
+
+{% if order %}
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4 border-0 shadow-sm">
+                <div class="card-header bg-gradient">
+                    <h5 class="mb-0 text-white">Thông Tin Giao Hàng</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="shipping_address" class="form-label">Địa Chỉ Giao Hàng</label>
+                            <textarea class="form-control" id="shipping_address" name="shipping_address" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Số Điện Thoại</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" required>
+                        </div>
+                        <button type="submit" class="btn custom-btn">
+                            <i class="fas fa-check me-2"></i>Đặt Hàng
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-gradient">
+                    <h5 class="mb-0 text-white">Chi Tiết Đơn Hàng</h5>
+                </div>
+                <div class="card-body">
+                    {% for item in order.items.all %}
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <h6 class="mb-0">{{ item.product.name }}</h6>
+                            <small class="text-muted">{{ item.quantity }} x {{ item.price|format_price }}đ</small>
+                        </div>
+                        <span class="price-tag">{{ item.price|multiply:item.quantity|floatformat:0 }}đ</span>
+                    </div>
+                    {% endfor %}
+                    <hr>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Tạm tính:</span>
+                        <span class="price-tag">{{ order.total_amount|format_price }}đ</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Phí vận chuyển:</span>
+                        <span class="text-success fw-bold">Miễn phí</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                        <span class="fw-bold">Tổng cộng:</span>
+                        <span class="price-tag h4 mb-0">{{ order.total_amount|format_price }}đ</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="text-center py-5">
+        <i class="fas fa-shopping-cart fa-4x mb-3 text-muted"></i>
+        <h3>Giỏ hàng của bạn đang trống</h3>
+        <p class="text-muted">Hãy thêm món ăn vào giỏ hàng trước khi thanh toán!</p>
+        <a href="{% url 'food_store:product_list' %}" class="btn custom-btn">
+            <i class="fas fa-utensils me-2"></i>Xem Thực Đơn
+        </a>
+    </div>
+{% endif %}
+
+<style>
+    /* ... các style từ cart.html ... */
+    .hero-section {
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 15px rgba(221, 36, 118, 0.3);
+    }
+
+    .card {
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+    .card-header.bg-gradient {
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        border: none;
+        padding: 1rem 1.5rem;
+    }
+
+    .price-tag {
+        font-weight: bold;
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+    }
+
+    .custom-btn {
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        border: none;
+        color: white;
+        transition: all 0.3s ease;
+        padding: 0.8rem 1.5rem;
+    }
+
+    .custom-btn:hover {
+        background: linear-gradient(45deg, #DD2476, #FF512F);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(221, 36, 118, 0.4);
+    }
+
+    .form-control:focus {
+        border-color: #DD2476;
+        box-shadow: 0 0 0 0.2rem rgba(221, 36, 118, 0.25);
+    }
+</style>
+{% endblock %} 

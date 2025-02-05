@@ -1,0 +1,280 @@
+{% extends 'food_store/base.html' %}
+
+{% block title %}Contact Us - Food Store{% endblock %}
+
+{% block content %}
+<div class="contact-section">
+    <!-- Hero Banner -->
+    <div class="hero-banner text-center p-5 rounded mb-5 animate__animated animate__fadeIn">
+        <div class="hero-content">
+            <h1 class="display-4 text-white fw-bold mb-4">Liên hệ chúng tôi</h1>
+            <p class="lead text-white mb-0">Chúng tôi rất mong nhận được sự liên hệ từ bạn</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Contact Cards -->
+        <div class="row contact-cards mb-5">
+            <div class="col-md-4 animate__animated animate__fadeInUp">
+                <div class="contact-card">
+                    <div class="card-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <h3>Gọi chúng tôi</h3>
+                    <p>+1 (234) 567-8900</p>
+                    <p class="text-muted">Từ 9h đến 18h</p>
+                </div>
+            </div>
+            <div class="col-md-4 animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
+                <div class="contact-card">
+                    <div class="card-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3>Email chúng tôi</h3>
+                    <p>contact@foodstore.com</p>
+                    <p class="text-muted">Chúng tôi sẽ trả lời trong vòng 24 giờ</p>
+                </div>
+            </div>
+            <div class="col-md-4 animate__animated animate__fadeInUp" style="animation-delay: 0.4s;">
+                <div class="contact-card">
+                    <div class="card-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3>Thăm chúng tôi</h3>
+                    <p>123 Food Street</p>
+                    <p class="text-muted">Cuisine City, FC 12345</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Form and Info -->
+        <div class="row">
+            <!-- Contact Form -->
+            <div class="col-lg-7 mb-4 animate__animated animate__fadeInLeft">
+                <div class="contact-form-card">
+                    <h2 class="section-title mb-4">Gửi cho chúng tôi</h2>
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="name" placeholder="Tên của bạn" required>
+                                    <label for="name">Tên của bạn</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-floating">
+                                    <input type="email" class="form-control" id="email" placeholder="Email của bạn" required>
+                                    <label for="email">Email của bạn</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="subject" placeholder="Chủ đề" required>
+                                <label for="subject">Chủ đề</label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-floating">
+                                <textarea class="form-control" id="message" style="height: 150px" placeholder="Nội dung" required></textarea>
+                                <label for="message">Nội dung</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn custom-btn btn-lg btn-primary">Gửi</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Business Hours and Map -->
+            <div class="col-lg-5 animate__animated animate__fadeInRight">
+                <div class="business-hours-card mb-4">
+                    <h2 class="section-title mb-4">Giờ làm việc</h2>
+                    <ul class="hours-list">
+                        <li>
+                            <span>Thứ 2 - Thứ 6</span>
+                            <span>9:00 AM - 10:00 PM</span>
+                        </li>
+                        <li>
+                            <span>Thứ 7</span>
+                            <span>10:00 AM - 11:00 PM</span>
+                        </li>
+                        <li>
+                            <span>Chủ nhật</span>
+                            <span>10:00 AM - 11:00 PM</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="map-card">
+                    <h2 class="section-title mb-4">Tìm chúng tôi</h2>
+                    <div class="map-container">
+                        <!-- Replace with actual map embed code -->
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.6763231528796!2d105.84125167499875!3d21.005473288673064!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ac76ccab6dd7%3A0x55e92a5b07a97d03!2sHanoi%20University%20of%20Science%20and%20Technology!5e0!3m2!1sen!2s!4v1709433344317!5m2!1sen!2s" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hero-banner {
+        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        min-height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: -2rem -15px 2rem;
+        border-radius: 0;
+    }
+
+    .contact-cards {
+        margin-bottom: 4rem;
+    }
+
+    .contact-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        height: 100%;
+        transition: transform 0.3s ease;
+    }
+
+    .contact-card:hover {
+        transform: translateY(-10px);
+    }
+
+    .card-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 1.5rem;
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .card-icon i {
+        font-size: 2rem;
+        color: white;
+    }
+
+    .contact-card h3 {
+        margin-bottom: 1rem;
+        color: #333;
+    }
+
+    .contact-form-card, .business-hours-card, .map-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .section-title {
+        position: relative;
+        padding-bottom: 15px;
+        margin-bottom: 25px;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+    }
+
+    .form-control {
+        border: 1px solid #ddd;
+        padding: 0.8rem;
+        border-radius: 8px;
+    }
+
+    .form-control:focus {
+        border-color: #DD2476;
+        box-shadow: 0 0 0 0.2rem rgba(221, 36, 118, 0.25);
+    }
+
+    .form-floating > .form-control {
+        padding: 1rem 0.75rem;
+    }
+
+    .form-floating > .form-control:focus ~ label,
+    .form-floating > .form-control:not(:placeholder-shown) ~ label {
+        transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+        color: #DD2476;
+    }
+
+    .hours-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .hours-list li {
+        display: flex;
+        justify-content: space-between;
+        padding: 1rem 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .hours-list li:last-child {
+        border-bottom: none;
+    }
+
+    .map-container {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .custom-btn {
+        padding: 0.8rem 2rem;
+        font-weight: 500;
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        border: none;
+        color: white;
+    }
+
+    .custom-btn:hover {
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        opacity: 0.8;
+    }
+
+    @media (max-width: 768px) {
+        .hero-banner {
+            min-height: 250px;
+            margin: -1rem -15px 2rem;
+        }
+
+        .contact-card {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .contact-form-card, .business-hours-card, .map-card {
+            text-align: center;
+        }
+
+        .hours-list li {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .hours-list li span:first-child {
+            margin-bottom: 0.5rem;
+        }
+    }
+</style>
+{% endblock %} 

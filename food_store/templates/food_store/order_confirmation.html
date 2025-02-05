@@ -1,0 +1,111 @@
+{% extends 'food_store/base.html' %}
+{% load custom_filters %}
+
+{% block title %}Đặt Hàng Thành Công - Cửa Hàng Đồ Ăn{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5 animate__animated animate__fadeIn">
+        <div class="success-icon mb-4">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h1 class="mb-3">Đặt Hàng Thành Công!</h1>
+        <p class="lead text-muted">Cảm ơn bạn đã đặt hàng. Chúng tôi sẽ liên hệ với bạn sớm nhất.</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-gradient">
+                    <h5 class="mb-0 text-white">Chi Tiết Đơn Hàng #{{ order.id }}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="order-details mb-4">
+                        <h6 class="mb-3">Thông Tin Giao Hàng:</h6>
+                        <p class="mb-1"><strong>Địa chỉ:</strong> {{ order.shipping_address }}</p>
+                        <p><strong>Số điện thoại:</strong> {{ order.phone }}</p>
+                    </div>
+                    
+                    <div class="order-items">
+                        <h6 class="mb-3">Sản Phẩm:</h6>
+                        {% for item in order.items.all %}
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <span class="fw-bold">{{ item.product.name }}</span>
+                                <small class="text-muted d-block">{{ item.quantity }} x {{ item.price|format_price }}đ</small>
+                            </div>
+                            <span class="price-tag">{{ item.price|multiply:item.quantity|format_price }}đ</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Tạm tính:</span>
+                        <span class="price-tag">{{ order.total_amount|format_price }}đ</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Phí vận chuyển:</span>
+                        <span class="text-success">Miễn phí</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="fw-bold">Tổng cộng:</span>
+                        <span class="price-tag h4">{{ order.total_amount|format_price }}đ</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="{% url 'food_store:product_list' %}" class="btn custom-btn">
+                    <i class="fas fa-arrow-left me-2"></i>Tiếp Tục Mua Sắm
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .success-icon {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 2rem;
+    }
+
+    .success-icon i {
+        font-size: 3rem;
+        color: white;
+    }
+
+    .card-header.bg-gradient {
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+    }
+
+    .price-tag {
+        font-weight: bold;
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .custom-btn {
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        border: none;
+        color: white;
+        transition: all 0.3s ease;
+        padding: 0.8rem 1.5rem;
+    }
+
+    .custom-btn:hover {
+        background: linear-gradient(45deg, #DD2476, #FF512F);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(221, 36, 118, 0.4);
+    }
+</style>
+{% endblock %} 
